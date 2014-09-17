@@ -1,0 +1,17 @@
+FactoryGirl.define do
+
+  factory :company do
+    identifier "48.589.322/0001-44"
+    social_name "Test Company Social Name"
+    comercial_name "Test Company Comercial Name"
+    zipcode "04571-000"
+    number 936
+    complement "7o."
+    country "Brasil"
+    address "Avenida Engenheiro Luiz Carlos Berrini"
+    district "Cidade Monções"
+    city "São Paulo"
+    state "SP"
+  end
+
+end

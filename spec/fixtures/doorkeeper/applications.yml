@@ -1,0 +1,5 @@
+app1:
+  name: Application1
+  uid: app
+  secret: 123456
+  redirect_uri: http://example.com

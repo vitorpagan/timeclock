@@ -1,0 +1,59 @@
+<% if current_user %>
+<!--   <div class="col-md-2">
+    <dl>
+      <dt>Today's Tasks</dt>
+      <dd class="bg-success"><input type="checkbox" checked/> Lorem ipsum</dd>
+      <dd><input type="checkbox"/> Lorem ipsum</dd>
+      <dd><input type="checkbox"/> Lorem ipsum</dd>
+      <dd><input type="checkbox"/> Lorem ipsum</dd>
+      <dd><input type="checkbox"/> Lorem ipsum</dd>
+      <dd><input type="checkbox"/> Lorem ipsum</dd>
+      <dd><input type="checkbox"/> Lorem ipsum</dd>
+    </dl>
+  </div> -->
+  <div class="col-md-12">
+    <div class="col-md-12 text-center">
+      <% if @today %>
+        <% if @today.closed_at.nil? %>
+          <h2 data-created-at="<%= @today.created_at.to_i*1000 %>"> 
+            Você tem uma sessão aberta desde <%= l @today.created_at, format: :time %>
+          </h2>
+          <%= link_to 'Encerrar', close_time_sheet_path(@today), class: 'btn btn-info' %>
+        <% end %>
+      <% else %>
+          <h2> 
+            <%= link_to 'Iniciar Sessão', open_time_sheet_path, class: 'btn btn-success' %>
+          </h2>
+      <% end %>
+    </div>
+    <div class="col-md-12" style="margin-top: 20px;">
+      <table class="table">
+          <% 
+          beginning = nil
+          total = 0
+          @sheets.each do |sheet| %>
+            <% if beginning != sheet.created_at.beginning_of_day %>
+              <tr>
+                <th colspan="3" class="text-center bg-success"><%= l sheet.created_at, format: :date %></th>
+              </tr>
+              <tr>
+                <th>Início</th>
+                <th>Fim</th>
+                <th>Total</th>
+              </tr>
+            <% beginning = sheet.created_at.beginning_of_day %>
+            <% end %>
+            <tr>
+              <td><%= l sheet.created_at, format: :time %></td>
+              <td><%= l sheet.closed_at, format: :time %></td>
+              <td><%= format_time_sheet(sheet.closed_at, sheet.created_at, 3600) %></td>
+            </tr>
+            <% total += (sheet.closed_at.to_i - sheet.created_at.to_i - 3600) %>
+          <% end %>
+      </table>
+    </div>
+  </div>
+  <footer style="text-align: center; padding: 50px; font-size: 30px;">
+    Total: <%= format_time(total) %>
+  </footer>
+<% end %>

@@ -1,0 +1,24 @@
+{
+  "name": "bioid",
+  "version": "0.0.0",
+  "authors": [
+    "Gabriel Lett Viviani <glett@bionexo.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.2.0",
+    "html5shiv": "~3.7.2",
+    "respond": "~1.4.2",
+    "excanvas": "*",
+    "page": "lucasmazza/page.js#~0.3.0",
+    "jQuery-Mask-Plugin": "1.7"
+  }
+}

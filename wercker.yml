@@ -1,0 +1,51 @@
+box: wercker/rvm
+# Build definition
+# See the Rails section on the wercker devcenter:
+# http://devcenter.wercker.com/articles/languages/ruby/settingup-rails4.html
+# You will want to define your database as follows:
+services:
+    - bolek-kurowski/postgresql9.3@0.0.8
+# See more about services on our devcenter:
+# http://devcenter.wercker.com/articles/services/
+build:
+    steps:
+        - rvm-use:
+            version: 2.1.2
+        - bundle-install
+        - rails-database-yml
+        - script:
+            name: echo ruby information
+            code: |
+                echo "ruby version $(ruby --version) running"
+                echo "from location $(which ruby)"
+                echo -p "gem list: $(gem list)"
+        - script:
+            name: db migrate
+            code: bundle exec rake db:migrate RAILS_ENV=test
+        - script:
+            name: rspec
+            code: bundle exec rspec -f d
+    after-steps:
+        - hipchat-notify:
+            token: $HIPCHAT_TOKEN
+            room-id: 604556
+            from-name: wercker
+deploy:
+    steps:
+        - create-file:
+            name: put ssh private key
+            filename: $HOME/.ssh/dev.pem
+            overwrite: true
+            hide-from-log: true
+            content: $AWS_SSH_KEY_PRIVATE
+        - script:
+            name: run chmod 0400 $HOME/.ssh/dev.pem
+            code: chmod 0400 $HOME/.ssh/dev.pem
+        - script:
+            name: capistrano
+            code: bundle exec cap dev deploy
+    # after-steps:
+    #     - hipchat-notify:
+    #         token: $HIPCHAT_TOKEN
+    #         room-id: 604556
+    #         from-name: wercker

@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Closed at:</strong>
+  <%= @time_sheet.closed_at %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @time_sheet.user %>
+</p>
+
+<%= link_to 'Edit', edit_time_sheet_path(@time_sheet) %> |
+<%= link_to 'Back', time_sheets_path %>
